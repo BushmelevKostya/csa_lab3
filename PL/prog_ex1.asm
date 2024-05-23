@@ -1,67 +1,81 @@
-SECTION .data
+section .data
     prompt db "Введите число: ", 0
-    res_prime db "Число простое", 0
-    res_no_prime db "Число не простое", 0
-    input db 0
-
-SECTION .bss
-    num resb 1
-
-SECTION .text
-    global _start
+    result_prime db "Число простое", 0
+    result_not_prime db "Число не простое", 0
+    num db 0
+    swrite db 4
+    sread db 3
+    stdout db 1
+    stdin db 0
+    len db 15
 
 _start:
-    ;input
-    mov eax, 4
-    mov ebx, 1
-    mov ecx, prompt
-    mov edx, 15
-    int 0x80
-    ;read input
-    mov eax, 3
-    mov ebx, 0
-    mov ecx, num
-    mov edx, 1
-    int 0x80
-    ;input to num
-    mov al, [num]
-    sub al, '0'
-    mov bl, al
-    ;init
-    mov ecx, 2
-check_prime:
-    ;check del on i
-    cmp ecx, bl
-    jge done
-    ;del num on ecx
-    mov eax, bl
-    cdq
-    div ecx
-    cmp edx, 0
-    je not_prime
+    LD swrite
+    ST eax
+    LD stdout
+    ST ebx
+    LD stdout
+    ST ecx
+    LD len
+    ST edx
+    syscall
 
-    inc ecx
-    jmp check_prime
+    LD sread
+    ST eax
+    LD stdin
+    ST ebx
+    LD num
+    ST ecx
+    LD 1
+    ST edx
+    syscall
+
+    LD eax
+    SUB '0'
+    ST ebx
+
+    LD 2
+    ST ecx
+
+check_prime:
+    MOD ecx
+    JGE done
+
+    LD num
+    DIV ecx
+    MOD edx
+    JE not_prime
+
+    LD ecx
+    ADD 1
+    ST ecx
+    JMP check_prime
 
 done:
-    ;print res
-    mov eax, 4
-    mov ebx, 1
-    mov ecx, result_prime
-    mov edx, 13
-    int 0x80
-    jmp exit
+    LD swrite
+    ST eax
+    LD stdout
+    ST ebx
+    LD result_prime
+    ST ecx
+    LD 13
+    ST edx
+    syscall
+
+    JMP exit
 
 not_prime:
-    ;print res
-    mov eax, 4
-    mov ebx, 1
-    mov ecx, result_not_prime
-    mov edx, 17
-    int 0x80
+    LD swrite
+    ST eax
+    LD stdout
+    ST ebx
+    LD result_not_prime
+    ST ecx
+    LD 13
+    ST edx
+    syscall
+
+    JMP exit
 
 exit:
-    ;end
-    mov eax, 1
-    xor ebx, ebx
-    int 0x80
+    HLT
