@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Opcode(Enum, str):
+class Opcode(str, Enum):
     ADD = "add"
     SUB = "sub"
     MUL = "mul"
@@ -15,7 +15,7 @@ class Opcode(Enum, str):
         return str(self.value)
 
 
-class Addressing(Enum, str):
+class Addressing(str, Enum):
     MEM = "mem"
     DIR = "dir"
 
@@ -24,7 +24,7 @@ class Addressing(Enum, str):
 
 
 class Instruction:
-    def __init__(self, address: int, opcode: Opcode, operand: int, addressing: Adressing):
+    def __init__(self, address: int, opcode: Opcode, operand: int, addressing: Addressing):
         self.address = address
         self.opcode = opcode
         self.operand = operand

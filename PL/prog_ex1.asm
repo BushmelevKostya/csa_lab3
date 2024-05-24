@@ -1,13 +1,13 @@
 section .data
-    prompt db "Введите число: ", 0
-    result_prime db "Число простое", 0
-    result_not_prime db "Число не простое", 0
+    prompt db "Enter number:", 0
+    result_prime db "Number is prime", 0
+    result_not_prime db "Number is not prime", 0
     num db 0
     swrite db 4
     sread db 3
     stdout db 1
     stdin db 0
-    len db 15
+    len db 14
 
 _start:
     LD swrite
@@ -58,7 +58,7 @@ done:
     ST ebx
     LD result_prime
     ST ecx
-    LD 13
+    LD 16
     ST edx
     syscall
 
@@ -71,7 +71,7 @@ not_prime:
     ST ebx
     LD result_not_prime
     ST ecx
-    LD 13
+    LD 20
     ST edx
     syscall
 
